@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use LWP::Simple;
 use open ':std', ':encoding(UTF-8)';
+use utf8;
 my $file_name;
 my $fh;
 my $dir_content="content";
@@ -18,7 +19,7 @@ sub get_dirs{
     my$content="@_";
     
     my@arr; 
-    while ($content=~/(href="[\w \/.\d\-_+\(\),']+\/)/gi) {
+    while ($content=~/(href="[\p{L} \/.\d\-_+\(\),'%]+\/)/gi) {
 	my$dir=$1;
 	$dir=~s/(href=")//gi; 
 	$dir=~s/(\.\.\/)//gi; 
@@ -30,7 +31,7 @@ sub get_dirs{
 }
 sub get_title{
     my$content="@_";
-    $content=~/(title\>[\w \/.\d\-_+\(\),']+)/gi;
+    $content=~/(title\>[\p{L} \/.\d\-_+\(\),'%]+)/gi;
     my $title=$1;
     $title=~s/(title\>)//gi;
     return$title;
@@ -39,7 +40,7 @@ sub get_files{
     my$content="@_";
     
     my@arr; 
-    while ($content=~/(href="[\w \/.\d\-_+\(\),']+\.(avi)|(mkv)|(mp4)|(mpg)|(mpeg))/gi) {
+    while ($content=~/(href="[\p{L} \/.\d\-_+\(\),'%]+\.(avi)|(mkv)|(mp4)|(mpg)|(mpeg))/gi) {
 	my$dir=$1;
 	$dir=~s/(href=")//gi; 
 	push@arr,$dir;
